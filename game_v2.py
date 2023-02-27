@@ -1,11 +1,14 @@
 """Игра угадай число
-Компьютер сам загадывает и сам угадывает число
+Компьютер сам загадывает и сам угадывает число не более чем за 20 попыток
 """
 
 import numpy as np
+import random
+
+random_number = random.randint(1, 101)
 
 
-def random_predict(number: int = 1) -> int:
+def game_score_v3(number: int = 1)->int:
     """Рандомно угадываем число
 
     Args:
@@ -15,36 +18,38 @@ def random_predict(number: int = 1) -> int:
         int: Число попыток
     """
     count = 0
+    start = 1
+    stop = 100
 
     while True:
         count += 1
-        predict_number = np.random.randint(1, 101)  # предполагаемое число
-        if number == predict_number:
-            break  # выход из цикла если угадали
+        average_number = (start + stop)//2
+        if average_number == random_number:
+            print(f'число {average_number} найдено за {count} попыток')
+            break #если число угадано
+        elif average_number > random_number:
+            stop = average_number
+        else:
+            start = average_number
+    
     return count
 
-
-def score_game(random_predict) -> int:
-    """За какое количство попыток в среднем за 1000 подходов угадывает наш алгоритм
+def score_game(game_score_v3)->int:
+    """За какое количество попыток в среднем за 1000 подходов угадывает наш алгоритм
 
     Args:
-        random_predict ([type]): функция угадывания
+        game_score_v3 ([type]): функция угадывания
 
     Returns:
         int: среднее количество попыток
     """
-    count_ls = []
-    #np.random.seed(1)  # фиксируем сид для воспроизводимости
+    count_ls = [] #список для сохранения количества попыток 
+    np.random.seed(1)  # фиксируем сид для воспроизводимости
     random_array = np.random.randint(1, 101, size=(1000))  # загадали список чисел
-
     for number in random_array:
-        count_ls.append(random_predict(number))
-
-    score = int(np.mean(count_ls))
+        count_ls.append(game_score_v3(number))
+    score=int(np.mean(count_ls))
     print(f"Ваш алгоритм угадывает число в среднем за:{score} попыток")
-    return score
-
-
-if __name__ == "__main__":
-    # RUN
-    score_game(random_predict)
+    return(score)
+# RUN
+score_game(game_score_v3)
