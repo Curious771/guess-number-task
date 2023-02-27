@@ -50,6 +50,9 @@ def score_game(game_score_v3)->int:
         count_ls.append(game_score_v3(number))
     score=int(np.mean(count_ls))
     print(f"Ваш алгоритм угадывает число в среднем за:{score} попыток")
-    return(score)
+    
+    return score
+
 # RUN
-score_game(game_score_v3)
+if __name__ == '__main__':
+    score_game(game_score_v3)
